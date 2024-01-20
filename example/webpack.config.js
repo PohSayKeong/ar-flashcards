@@ -27,9 +27,7 @@ module.exports = (_, { mode }) => ({
       template: "src/index.html",
     }),
     new CopyWebpackPlugin({
-      patterns: [
-        { from: "./data/", to: "data/" },
-      ],
+      patterns: [{ from: "./data/", to: "data/" }],
     }),
   ].filter(Boolean),
   devtool: mode === "development" ? "eval-source-map" : "source-map",
@@ -46,6 +44,10 @@ module.exports = (_, { mode }) => ({
             },
           },
         ],
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"],
       },
     ],
   },
