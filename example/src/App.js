@@ -2,6 +2,7 @@ import { ARMarker } from "@artcom/react-three-arjs"
 import { useLoader } from "@react-three/fiber"
 import React, { useEffect, useRef, useState } from "react"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
+import { Textbox } from "./textbox"
 
 const Model = () => {
   const gltf = useLoader(GLTFLoader, "data/rhino.glb")
@@ -52,6 +53,7 @@ export const App = () => {
         }}>
         <Model />
       </ARMarker>
+      <Textbox word="HORSE" input={typedLetters} />
     </>
   )
 }
