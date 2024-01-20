@@ -1,7 +1,8 @@
-import { ARCanvas, ARMarker } from "@artcom/react-three-arjs"
+import { ARMarker } from "@artcom/react-three-arjs"
 import { useLoader } from "@react-three/fiber"
-import React, { useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
+import { Textbox } from "./textbox"
 
 const Model = ({word}) => {
   const gltf = useLoader(GLTFLoader, `data/${word}.glb`)
@@ -52,27 +53,40 @@ const Model = ({word}) => {
 }
 
 export const App = () => {
+  const [word, setWord] = useState("")
+  const [typedLetters, setTypedLetters] = useState("")
+
+  const handleKeyDown = event => {
+    const keyPressed = event.key.toUpperCase() // Convert pressed key to uppercase
+    // handle backspace
+    if (keyPressed === "BACKSPACE") {
+      setTypedLetters(prevTypedLetters => prevTypedLetters.slice(0, -1))
+      return
+    }
+    setTypedLetters(prevTypedLetters => prevTypedLetters + keyPressed)
+  }
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown)
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [])
+
   return (
     <>
-      <ARCanvas
-        gl={{ antialias: false, powerPreference: "default", physicallyCorrectLights: true }}
-        onCameraStreamReady={() => console.log("Camera stream ready")}
-        onCameraStreamError={() => console.error("Camera stream error")}
-        onCreated={({ gl }) => {
-          gl.setSize(window.innerWidth, window.innerHeight)
+      <ARMarker
+        params={{ smooth: true }}
+        type={"pattern"}
+        patternUrl={"data/patt.hiro"}
+        onMarkerFound={() => {
+          console.log("Marker Found")
         }}>
-        <ambientLight />
-        <pointLight position={[10, 10, 0]} intensity={10.0} />
-        <ARMarker
-          params={{ smooth: true }}
-          type={"pattern"}
-          patternUrl={"data/patt.hiro"}
-          onMarkerFound={() => {
-            console.log("Marker Found")
-          }}>
-          <Model word={"octopus"}/>
-        </ARMarker>
-      </ARCanvas>
+        <Model />
+      </ARMarker>
+      <Textbox word="HORSE" input={typedLetters} />
     </>
   )
 }
