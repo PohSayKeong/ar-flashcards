@@ -22,7 +22,7 @@ const Model = ({ word }) => {
     if (word == "DOLPHIN") {
       gltf.scene.scale.set(2.2, 2.2, 2.2)
     }
-    if (word == "OCOTOPUS") {
+    if (word == "OCTOPUS") {
       gltf.scene.rotation.y = -Math.PI / 2
       gltf.scene.scale.set(7.5, 7.5, 7.5)
     }
@@ -40,11 +40,6 @@ const Model = ({ word }) => {
     if (word == "ELEPHANT") {
       gltf.scene.position.set(0.4, -1.8, 0)
       gltf.scene.scale.set(0.002, 0.002, 0.002)
-    }
-
-    if (word == "RHINO") {
-      gltf.scene.scale.set(2, 2, 2)
-      gltf.scene.position.set(1, -10, 0)
     }
   }
 
